@@ -1,0 +1,13 @@
+apiVersion: v2
+name: kubernetes-platform-app
+description: Production-grade Helm chart for Kubernetes Platform Engineering Lab
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+keywords:
+  - platform-engineering
+  - gitops
+  - argocd
+  - prometheus
+maintainers:
+  - name: PandaVerse09

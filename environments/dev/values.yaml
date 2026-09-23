@@ -1,0 +1,40 @@
+# Environment overrides for DEV (Local KIND Cluster)
+replicaCount: 2
+
+image:
+  repository: ghcr.io/pandaverse09/kubernetes-platform-app
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+ingress:
+  enabled: true
+  className: "nginx"
+  hosts:
+    - host: app.local
+      paths:
+        - path: /
+          pathType: Prefix
+
+resources:
+  limits:
+    cpu: 250m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 60
+
+serviceMonitor:
+  enabled: true
+
+env:
+  NODE_ENV: "development"
+  APP_VERSION: "dev-latest"
+
+secrets:
+  API_KEY: "dev-local-secret-key-12345"

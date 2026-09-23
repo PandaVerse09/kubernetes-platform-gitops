@@ -1,0 +1,45 @@
+# Environment overrides for PROD (AWS EKS Cluster)
+replicaCount: 3
+
+image:
+  repository: ghcr.io/pandaverse09/kubernetes-platform-app
+  tag: "1.0.0"
+  pullPolicy: IfNotPresent
+
+ingress:
+  enabled: true
+  className: "nginx"
+  hosts:
+    - host: api.production.pandaverse.dev
+      paths:
+        - path: /
+          pathType: Prefix
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+  targetMemoryUtilizationPercentage: 80
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 2
+
+serviceMonitor:
+  enabled: true
+
+env:
+  NODE_ENV: "production"
+  APP_VERSION: "1.0.0"
+
+secrets:
+  API_KEY: "prod-managed-kms-secret-token"
