@@ -117,15 +117,19 @@ kubernetes-platform-gitops/
 
 ## 📸 Platform Verification & Live Telemetry
 
-### 1. Dynamic Horizontal Autoscaling (HPA Scaling to 5 Replicas)
+### 1. Interactive Application Platform Dashboard (`http://localhost/`)
+*Live in-cluster web interface featuring real-time Pod telemetry, downward API metadata, and interactive Chaos & Autoscaling trigger controls:*
+![Application Platform Dashboard](docs/images/app-platform-dashboard.png)
+
+### 2. Dynamic Horizontal Autoscaling (HPA Scaling to 5 Replicas)
 *Real-time demonstration of the Kubernetes HPA scaling the deployment from 2 to 5 pods during simulated traffic surges:*
 ![Argo CD HPA Autoscaling](docs/images/argocd-hpa-scaling.png)
 
-### 2. SRE Observability & 99.999% Availability SLO (Grafana)
+### 3. SRE Observability & 99.999% Availability SLO (Grafana)
 *Production Grafana telemetry monitoring API server latency, error budgets, work queue saturation, and SLIs:*
 ![Grafana 99.999% SLO Dashboard](docs/images/grafana-slo-dashboard.jpg)
 
-### 3. Declarative GitOps Application State (Argo CD)
+### 4. Declarative GitOps Application State (Argo CD)
 *Automated continuous reconciliation and healthy sync status managed by Argo CD:*
 ![Argo CD GitOps Applications](docs/images/argocd-gitops-overview.png)
 
