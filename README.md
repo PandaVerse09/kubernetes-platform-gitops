@@ -115,31 +115,31 @@ kubernetes-platform-gitops/
 
 ---
 
-## 🖥️ Live Platform Dashboard Access
+## 🖥️ Platform Endpoints & Local Access Guide
 
-All platform services are actively running and accessible on `localhost`:
+> ℹ️ **Note for GitHub Visitors:** The endpoints below run on your local machine (`localhost`) when executing this cluster locally. In a live AWS EKS deployment, these map to AWS Application Load Balancers (ALBs) and Amazon Route 53 DNS records (e.g., `api.production.pandaverse.dev`).
 
-| Service | Local URL | Credentials / Notes |
-| :--- | :--- | :--- |
-| **Application Web Dashboard** | [http://localhost/](http://localhost/) | Interactive UI showing real-time Pod telemetry, Chaos Lab buttons, and CRUD manager. |
-| **Argo CD Web UI** | [https://localhost:8081](https://localhost:8081) | User: `admin` • Password: `DsvwQNYO9FB5p670` *(Accept self-signed SSL warning)* |
-| **Grafana Monitoring** | [http://localhost:3000](http://localhost:3000) | User: `admin` • Password: `prom-operator` |
-| **Prometheus Raw Metrics** | [http://localhost/metrics](http://localhost/metrics) | Scraped RED metrics exposed by the microservice. |
-| **Liveness Probe** | [http://localhost/health](http://localhost/health) | Kubernetes liveness probe check. |
+| Component | Local Endpoint | Port-Forward Command | Default Credentials / Role |
+| :--- | :--- | :--- | :--- |
+| **Application Web Dashboard** | `http://localhost/` | *(Exposed via NGINX Ingress on port 80)* | Interactive UI with live telemetry & Chaos Lab |
+| **Argo CD Web UI** | `https://localhost:8081` | `kubectl port-forward svc/argocd-server -n argocd 8081:443` | User: `admin` • Password: `DsvwQNYO9FB5p670` |
+| **Grafana Observability** | `http://localhost:3000` | `kubectl port-forward svc/prometheus-grafana -n monitoring 3000:80` | User: `admin` • Password: `prom-operator` |
+| **Prometheus Scrape Engine** | `http://localhost/metrics` | *(Exposed via Ingress)* | Native Prometheus exposition format |
+| **Health Probe** | `http://localhost/health` | *(Exposed via Ingress)* | Kubernetes Liveness Probe endpoint |
 
 ---
 
 ## 🎯 Live Demonstration Runbook
 
 ### Scenario A: Zero-Downtime Self-Healing (Chaos Test)
-1. Open the [Argo CD UI](https://localhost:8081) and navigate to `kubernetes-platform-app-dev`.
-2. Open the [App Dashboard](http://localhost/) and click **"Simulate Fatal Crash"** (or run `curl.exe -X POST http://localhost/api/v1/admin/crash`).
-3. **Observe**: One pod exits; the second pod takes 100% of user traffic with zero downtime; Kubernetes instantly respawns a replacement pod.
+1. Open the Argo CD UI at `https://localhost:8081` and navigate to the `kubernetes-platform-app-dev` application.
+2. Open the App Dashboard at `http://localhost/` and click **"Simulate Fatal Crash"** (or execute `curl.exe -X POST http://localhost/api/v1/admin/crash`).
+3. **Observe**: The targeted container terminates; the secondary replica absorbs 100% of user traffic with zero dropped requests; the Kubernetes kubelet automatically respawns a healthy pod within seconds.
 
 ### Scenario B: Dynamic Horizontal Autoscaling (HPA)
-1. In the [App Dashboard](http://localhost/), click **"Burn CPU (Trigger HPA Autoscaler)"** multiple times.
-2. In PowerShell, monitor the autoscaler: `kubectl get hpa -n dev -w`.
-3. **Observe**: CPU spikes above the 60% threshold; Kubernetes HPA scales the deployment out from **2 pods ➔ 3 pods ➔ 5 pods** in real-time.
+1. In the App Dashboard at `http://localhost/`, click **"Burn CPU (Trigger HPA Autoscaler)"** to generate load.
+2. In your terminal, watch the autoscaler: `kubectl get hpa -n dev -w`.
+3. **Observe**: As CPU exceeds the 60% threshold, the HPA controller scales the deployment from **2 pods ➔ 3 pods ➔ 5 pods** in real-time.
 
 ### Scenario C: GitOps Continuous Delivery
 1. Make any configuration change in this repository (e.g., replica count or resource limits) and run `git push`.
