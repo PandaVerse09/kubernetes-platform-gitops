@@ -135,13 +135,22 @@ kubernetes-platform-gitops/
 
 > ℹ️ **Note for GitHub Visitors:** The endpoints below run on your local machine (`localhost`) when executing this cluster locally. In a live AWS EKS deployment, these map to AWS Application Load Balancers (ALBs) and Amazon Route 53 DNS records (e.g., `api.production.pandaverse.dev`).
 
-| Component | Local Endpoint | Port-Forward Command | Default Credentials / Role |
+| Component | Local Endpoint | Port-Forward Command | Authentication & Secret Retrieval |
 | :--- | :--- | :--- | :--- |
 | **Application Web Dashboard** | `http://localhost/` | *(Exposed via NGINX Ingress on port 80)* | Interactive UI with live telemetry & Chaos Lab |
-| **Argo CD Web UI** | `https://localhost:8081` | `kubectl port-forward svc/argocd-server -n argocd 8081:443` | User: `admin` • Password: `DsvwQNYO9FB5p670` |
-| **Grafana Observability** | `http://localhost:3000` | `kubectl port-forward svc/prometheus-grafana -n monitoring 3000:80` | User: `admin` • Password: `prom-operator` |
+| **Argo CD Web UI** | `https://localhost:8081` | `kubectl port-forward svc/argocd-server -n argocd 8081:443` | User: `admin` • Secret: Run command below *(Retrieved from cluster)* |
+| **Grafana Observability** | `http://localhost:3000` | `kubectl port-forward svc/prometheus-grafana -n monitoring 3000:80` | User: `admin` • Secret: Run command below *(Retrieved from cluster)* |
 | **Prometheus Scrape Engine** | `http://localhost/metrics` | *(Exposed via Ingress)* | Native Prometheus exposition format |
 | **Health Probe** | `http://localhost/health` | *(Exposed via Ingress)* | Kubernetes Liveness Probe endpoint |
+
+#### Retrieving Cluster Secrets Securely:
+```bash
+# Retrieve Argo CD admin password:
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+# Retrieve Grafana admin password:
+kubectl -n monitoring get secret prometheus-grafana -o jsonpath="{.data.admin-password}" | base64 -d
+```
 
 ---
 
