@@ -117,21 +117,25 @@ kubernetes-platform-gitops/
 
 ## 📸 Platform Verification & Live Telemetry
 
-### 1. Interactive Application Platform Dashboard (`http://localhost/`)
+### 1. Multi-Environment GitOps Control Plane (Argo CD)
+*Argo CD managing concurrent declarative lifecycles for both `dev` and `prod` environments with automated drift reconciliation:*
+![Argo CD Multi-Environment Applications](docs/images/01-argocd-multi-env.png)
+
+### 2. Production Topology & Resource Hierarchy (Argo CD)
+*Live visual tree of production resources: Deployment, ReplicaSet (3 Pods), Horizontal Pod Autoscaler (HPA), Pod Disruption Budget (PDB), Service, Ingress, and ServiceMonitor:*
+![Argo CD Production Resource Tree](docs/images/02-argocd-prod-tree.png)
+
+### 3. Interactive Application Platform Dashboard (`http://localhost/`)
 *Live in-cluster web interface featuring real-time Pod telemetry, downward API metadata, and interactive Chaos & Autoscaling trigger controls:*
-![Application Platform Dashboard](docs/images/app-platform-dashboard.png)
+![Application Platform Dashboard](docs/images/03-app-platform-dashboard.png)
 
-### 2. Dynamic Horizontal Autoscaling (HPA Scaling to 5 Replicas)
-*Real-time demonstration of the Kubernetes HPA scaling the deployment from 2 to 5 pods during simulated traffic surges:*
-![Argo CD HPA Autoscaling](docs/images/argocd-hpa-scaling.png)
+### 4. Workload CPU & Memory Telemetry (Grafana)
+*Real-time compute resource tracking, request quotas, and memory consumption across platform workloads:*
+![Grafana Workload Compute Metrics](docs/images/04-grafana-workload-metrics.png)
 
-### 3. SRE Observability & 99.999% Availability SLO (Grafana)
-*Production Grafana telemetry monitoring API server latency, error budgets, work queue saturation, and SLIs:*
-![Grafana 99.999% SLO Dashboard](docs/images/grafana-slo-dashboard.jpg)
-
-### 4. Declarative GitOps Application State (Argo CD)
-*Automated continuous reconciliation and healthy sync status managed by Argo CD:*
-![Argo CD GitOps Applications](docs/images/argocd-gitops-overview.png)
+### 5. Centralized SRE Observability Suite (Grafana Dashboards)
+*Pre-configured operational dashboards covering Kubernetes cluster health, API server latency, CoreDNS, etcd, and node saturation:*
+![Grafana SRE Dashboards Suite](docs/images/05-grafana-dashboards-suite.png)
 
 ---
 
