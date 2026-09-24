@@ -18,10 +18,6 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
-    - host: 127.0.0.1
-      paths:
-        - path: /
-          pathType: Prefix
 
 resources:
   limits:
